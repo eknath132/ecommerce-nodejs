@@ -23,7 +23,7 @@ class Usuario {
     }
     getBookNames(){
         let newLibros = this.libros.map(libro => libro.nombre)
-        return console.log(newLibros)
+        return console.log(`El usuario ${this.nombre} tiene los libros: ${newLibros}`)
     }
 }
 
