@@ -7,74 +7,79 @@ class Contenedor {
     async save (obj) {
         try {
             // Verificamos si existe un archivo
-            const archivos = await fs.promises.readFile(`./${this.name}.txt`, 'utf-8')
-            // parseamos el archivo
-            const archivoParse = JSON.parse(archivos) 
-            // agregamos la funcion de marh max para obtener el id mas alto
-            const ultimoId = archivoParse.reverse()
-            // pusheamos el nuevo objeto al array de archivoParse y con el id sumado + 1
-            archivoParse.push({...obj, id: ultimoId[0].id + 1 })
-            // Agregamos nuevamente la lista de productos con los nuevos productos
-            return fs.promises.writeFile(`./${this.name}.txt`, JSON.stringify(archivoParse, null , 2))
-            .then(() => 'Se creo exitosamente el nuevo producto con el id: ' + (ultimoId[0].id + 1))
-            .catch(() => {throw new Error ('Hubo un error al crearse el producto')})
+            if( fs.existsSync(`./${this.name}.txt`)) {
+                const productos = await fs.promises.readFile(`./${this.name}.txt`, 'utf-8')
+                const productosJson = JSON.parse(productos)
+                // obtenemos el id mayor
+                const idMayor  = Math.max(...productosJson.map(producto => producto?.id))
+    
+                const productoNuevo = {...obj, id: idMayor + 1 } // Agregamos el objeto al array
+                productosJson.push(productoNuevo)
+    
+                return fs.promises.writeFile(`./${this.name}.txt`, JSON.stringify(productosJson, null , 2))
+                .then(() => productoNuevo )
+                .catch(() => {throw new Error ('Hubo un error al crearse el producto')})
+            } else {
+                const productoNuevo = {...obj, id: 1 }
+                return fs.promises.writeFile(`./${this.name}.txt`, JSON.stringify([productoNuevo], null , 2))
+                .then(() => productoNuevo)
+                .catch(() =>  {throw new Error ('Hubo un error al crearse el producto')})
+            }
 
         } catch (error) {
-            // Si no existe el archivo, creamos por primera vez la lista de productos
-            return fs.promises.writeFile(`./${this.name}.txt`, JSON.stringify([{...obj, id:1}], null , 2))
-            .then(() => 'Se creo exitosamente el primer producto con el id: ' + 1)
-            .catch(() =>  {throw new Error ('Hubo un error al crearse el producto')})
+            // // Si no existe el archivo, creamos por primera vez la lista de productos
+            throw new Error(error)
         }
-        
     }
 
     async getById (id) {
         try {
-            const archivos = await fs.promises.readFile(`./${this.name}.txt`, 'utf-8')
-            // parseamos el archivo
-            const archivoParse = JSON.parse(archivos)
-            // Buscamos el producto con el id
-            const productoEncontrado = archivoParse.find(archivo => archivo.id === id)
-            // Si el producto no existe tira genera un new Error
+            const productos = await fs.promises.readFile(`./${this.name}.txt`, 'utf-8')
+            const productosJson = JSON.parse(productos)
+            const productoEncontrado = productosJson.find(producto => producto.id === parseInt(id))
             if(!productoEncontrado) {
-                throw (null)
+                throw ('Producto no encontrado')
             }
             return productoEncontrado
         } catch (error) {
-            throw new Error( error )
+            throw error
+        }
+    }
+
+    async update (body, productoParaActualizar ,productosJson) {
+        try {
+            const productoActualizado = {...productoParaActualizar, ...body}
+
+            const nuevoArrayProductos = productosJson.map(producto => {
+                if(producto.id === productoActualizado.id){
+                    return (producto = {...producto, ...productoActualizado})
+                }
+                return producto
+            })
+
+            return fs.promises.writeFile(`./${this.name}.txt`, JSON.stringify(nuevoArrayProductos, null , 2))
+            .then(() => productoActualizado )
+            .catch(() => {throw new Error ('Hubo un error al crearse el producto')})
+
+        } catch (error) {
+            throw error
         }
     }
 
     async getAll () {
-        try {
-            const archivos = await fs.promises.readFile(`./${this.name}.txt`, 'utf-8')
-            // parseamos el archivo
-            const archivoParse = JSON.parse(archivos)
-            return archivoParse
-        } catch (error) {
-            throw new Error( error )
-        }
+        const archivos = await fs.promises.readFile(`./${this.name}.txt`, 'utf-8')
+        const archivoParse = JSON.parse(archivos)
+        return archivoParse
     }
 
-    async deleteById (id) {
+    async deleteById (archivosParseados, id) {
         try {
-            const archivos = await fs.promises.readFile(`./${this.name}.txt`, 'utf-8')
-            // parseamos el archivo
-            const archivoParse = JSON.parse(archivos)
-            // Buscamos el id para ver si el producto existe
-            const productoEncontrado = archivoParse.find(archivo => archivo.id === id)
-            if(!productoEncontrado) {
-                throw ('No fue encontrado el producto con id :' + id)
-            }
             // Se guarda el nuevo arreglos sin el id que queremos eliminar
-            let nuevoArray = archivoParse.filter(archivo => archivo.id !== id)
-            if(!nuevoArray) {
-                nuevoArray = []
-            }
-            fs.promises.writeFile(`./${this.name}.txt`, JSON.stringify(nuevoArray, null, 2))
-            .then(() => console.log('El archivo fue eliminado exitosamente'))
-            .catch(() => console.log('Hubo un error al eliminarse el producto'))
-
+            let nuevoArray = archivosParseados.filter(archivo => archivo.id !==  parseInt(id))
+            const statusSave = fs.promises.writeFile(`./${this.name}.txt`, JSON.stringify(nuevoArray, null, 2))
+            .then(() => 'Producto eliminado con exito')
+            .catch(( err ) =>  err )
+            return statusSave
         } catch (error) {
             throw new Error(error)
         }
