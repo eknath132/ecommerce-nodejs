@@ -67,9 +67,13 @@ class Contenedor {
     }
 
     async getAll () {
-        const archivos = await fs.promises.readFile(`./${this.name}.txt`, 'utf-8')
-        const archivoParse = JSON.parse(archivos)
-        return archivoParse
+        if( fs.existsSync(`./productos.txt`)) {
+            const archivos = await fs.promises.readFile(`./${this.name}.txt`, 'utf-8')
+            const archivoParse = JSON.parse(archivos)
+            return archivoParse
+        }else {
+            return []
+        }
     }
 
     async deleteById (archivosParseados, id) {

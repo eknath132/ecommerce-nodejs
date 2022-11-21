@@ -1,10 +1,34 @@
 const express = require('express')
+const handlebars = require('express-handlebars')
 const contenedor = require('./classProducto')
 const fs = require('fs')
 
 const app = express()
 const routerProducto = express.Router()
 const PORT = 8080
+
+//###### Preparar motor de plantilla handlebars
+
+    // app.engine('handlebars', handlebars.engine())
+    // app.set('views', './handlebars')
+    // app.set('view engine', 'handlebars')
+
+// ##### cierre motor de plantilla handlebars
+
+
+// ##### Prepara motor plantilla pug
+
+    // app.set('views', './pug')
+    // app.set('view engine', 'pug')
+
+// ##### cierre motor de plantilla pugs
+
+// #### Preparar motor plantilla Ejs
+    app.set('views', './ejs')
+    app.set('view engine', 'ejs')
+
+
+// ### cierre motor plantilla ejs
 
 const productos = new contenedor('productos')
 
@@ -28,7 +52,7 @@ async function productoExistente (req, res, next) {
             req.productosJson = productoJson
             next()
         }else {
-            res.json({error: 'No existe la carpeta de productos'})
+            res.render('datos', {productos: []})
             return;
         }
     } catch (error) {
@@ -39,16 +63,13 @@ async function productoExistente (req, res, next) {
 
 routerProducto.get('/', async( req, res) => { 
     try {
-        const allProducts = await productos.getAll()
-        if(allProducts.length === 0) {
-            res.json({error: 'No hay productos'})
-            return
-        }
-        res.json(allProducts)
+        const productosGet = await productos.getAll()
+        res.render('datos', {productos: productosGet || []})
     } catch (error) {
         throw new Error(error)
     }
 })
+
 
 routerProducto.get('/:id', productoExistente, async( req, res ) => { 
     try {
@@ -67,7 +88,8 @@ routerProducto.put('/:id', productoExistente, async( req, res ) => {
 routerProducto.post('/', async( req, res ) => {
     try{
         const success = await productos.save(req.body)
-        res.json(success)
+        console.log('success', success)
+        res.redirect('/api/productos')
     } catch (error) {
         throw new Error('Error, ' + error)
     }

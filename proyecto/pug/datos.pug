@@ -1,0 +1,51 @@
+extends layout
+
+block medidor
+    //- // el guión permite definir variables
+    //- - const estilo = "width:25%;height:20px"
+    //- // el simbolo != permite insertar html parseado en lugar del string literal contenido en la variable
+    //- h1(style="color:blue;")!=titulo
+    //- span=min+" "
+    //- meter(value=nivel min=min max=max style=estilo)
+    //- span=" "+max
+
+
+    h1(style="color:blue") Ingrese datos
+    br
+    form(action="/api/productos" method="post")
+
+        div( class="form-group" )
+            label(for="producto")
+                b Producto
+            input(id="producto" class="form-control" type="text" name="producto")
+
+        div( class="form-group" )
+                label(for="precio")
+                    b Precio
+                input(id="precio" class="form-control" type="text" name="precio")
+
+        div( class="form-group" )
+            label(for="thumbnail")
+                b Thumbnail
+            input(id="thumbnail" class="form-control" type="text" name="thumbnail")
+
+        button(class="btn btn-success mt-3 mb-5") Enviar
+
+    h2(style="color:crimson") Historial
+        if productos.length
+            div(class="table-responsive")
+                table(class="table table-dark")
+                    tr(style="color: yellow;")
+                        th Producto
+                        th Precio 
+                        th Thumbnail
+                    each val in productos
+                        tr
+                            td=val.producto
+                            td=val.precio
+                            td=val.thumbnail
+
+                </table>
+            </div>
+        else
+            div No hay datos
