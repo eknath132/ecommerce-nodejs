@@ -1,0 +1,19 @@
+[
+  {
+    "user": "perales.azarel@gmail.com",
+    "text": "hola buenos dias",
+    "fecha": "11/11/2022, 21:46:20"
+  },
+  {
+    "user": "perales@gmail.com",
+    "text": "probando",
+    "fecha": "30/11/2022, 20:23:01",
+    "id": null
+  },
+  {
+    "user": "cachito@gmail.com",
+    "text": "probando de otro lado",
+    "fecha": "30/11/2022, 20:23:32",
+    "id": null
+  }
+]

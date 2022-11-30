@@ -22,21 +22,7 @@
 </form>
 
 <h2 style="color:crimson;">Historial</h2>
-    {{#if productos}}
-    <div class="table-responsive">
-        <table class="table table-dark">
-            <tr style="color: yellow;"> <th>Producto</th> <th>Precio</th> <th>Thumbnail</th> </tr>
-            {{#each productos}}
-                <tr>
-                    <td> {{producto}} </td>
-                    <td> {{precio}} </td>
-                    <td> {{thumbnail}}  </td>
-                </tr>
-            {{/each}}
-        </table>
-    </div>
-    {{else}}
-    <div>
-        No hay datos
-    </div>
-    {{/if}}
+    
+
+<script src="./socket.io/socket.io.js"></script>
+<script src="./index.js"></script>

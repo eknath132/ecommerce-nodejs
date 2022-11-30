@@ -1,17 +1,22 @@
 const express = require('express')
+const { Server : HttpServer } = require('http')
+const { Server: IOServer } = require('socket.io')
+
 const handlebars = require('express-handlebars')
 const contenedor = require('./classProducto')
 const fs = require('fs')
 
 const app = express()
+const httpServer = new HttpServer(app)
+const io = new IOServer(httpServer)
 const routerProducto = express.Router()
 const PORT = 8080
 
 //###### Preparar motor de plantilla handlebars
 
-    // app.engine('handlebars', handlebars.engine())
-    // app.set('views', './handlebars')
-    // app.set('view engine', 'handlebars')
+    app.engine('handlebars', handlebars.engine())
+    app.set('views', './handlebars')
+    app.set('view engine', 'handlebars')
 
 // ##### cierre motor de plantilla handlebars
 
@@ -24,8 +29,8 @@ const PORT = 8080
 // ##### cierre motor de plantilla pugs
 
 // #### Preparar motor plantilla Ejs
-    app.set('views', './ejs')
-    app.set('view engine', 'ejs')
+    // app.set('views', './ejs')
+    // app.set('view engine', 'ejs')
 
 
 // ### cierre motor plantilla ejs
@@ -34,7 +39,7 @@ const productos = new contenedor('productos')
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-app.use('/static',express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/public'))
 
 // Middleware
 async function productoExistente (req, res, next) {
@@ -108,7 +113,7 @@ routerProducto.delete('/:id', productoExistente , async( req, res ) => {
 
 app.use('/api/productos',  routerProducto)
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
     console.log('Escuchando en el puerto: ' + PORT)
 })
 

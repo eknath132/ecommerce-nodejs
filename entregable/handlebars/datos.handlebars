@@ -1,0 +1,38 @@
+<h1 style="color:blue;">Ingrese datos</h1>
+<br>
+
+<form id="formSubmit">
+
+    <div class="form-group">
+        <label for="producto"><b>Producto</b></label>
+        <input id="producto" class="form-control" type="text" name="producto">
+    </div>
+
+    <div class="form-group">
+        <label for="precio"><b>Precio</b></label>
+        <input id="precio" class="form-control" type="text" name="precio">
+    </div>
+
+    <div class="form-group">
+        <label for="thumbnail"><b>thumbnail</b></label>
+        <input id="thumbnail" class="form-control" type="text" name="thumbnail">
+    </div>
+
+    <button class="btn btn-success mt-3 mb-5">Enviar</button>
+</form>
+
+<h2 style="color:crimson;">Historial</h2>
+    <div id="productosContenedor"> </div>
+
+    <form class="form-inline" id="chatSubmit" autocomplete="off">
+        <input type="text" id="username" class="form-control my-2 mr-2" placeholder="Tu Correo electronico">
+        <input type="text" id="text" class="form-control my-2 mr-2" placeholder="Escriba su mensaje">
+        <button class="btn btn-success mt-3 mb-5">Enviar</button>
+    </form>
+
+    <div id="chatContenedor"> </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js" integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="./socket.io/socket.io.js"></script>
+<script src="./index.js"></script>
