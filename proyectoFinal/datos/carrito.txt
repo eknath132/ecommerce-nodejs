@@ -1,0 +1,28 @@
+[
+  {
+    "id": 2,
+    "timestamp": "7/12/2022 00:29:28",
+    "productos": [
+      {
+        "timestamp": "2/12/2022 19:37:22",
+        "nombre": "producto2",
+        "descripcion": "producto2",
+        "codigo": "02",
+        "foto": "url",
+        "precio": 150,
+        "stock": 5,
+        "id": 2
+      },
+      {
+        "timestamp": "3/12/2022 19:37:22",
+        "nombre": "producto1",
+        "descripcion": "producto1",
+        "codigo": "01",
+        "foto": "url",
+        "precio": 100,
+        "stock": 10,
+        "id": 1
+      }
+    ]
+  }
+]
