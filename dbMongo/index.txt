@@ -1,0 +1,81 @@
+1- 
+    use ecommerce
+2- 
+    db.productos.insertMany([
+        {titulo: "taza", precio: 570, thumbnail: "url"},
+        {titulo: "remera", precio: 1400, thumbnail: "url"},
+        {titulo: "chapita", precio: 600, thumbnail: "url"},
+        {titulo: "mate", precio: 700, thumbnail: "url"},
+        {titulo: "taza magica", precio: 1200, thumbnail: "url"},
+        {titulo: "almohada", precio: 800, thumbnail: "url"},
+        {titulo: "tarjeta 800u", precio: 900, thumbnail: "url"},
+        {titulo: "banderas", precio: 2000, thumbnail: "url"},
+        {titulo: "logos 1000u", precio: 3670, thumbnail: "url"},
+        {titulo: "botella", precio: 4000, thumbnail: "url"}
+    ])
+    db.mensajes.insertMany([
+        {
+            user: "perales.azarel@gmail.com",
+            text: "hola buenos dias",
+            fecha: "11/11/2022, 21:46:20"
+        },
+        {
+            user: "perales@gmail.com",
+            text: "probando",
+            fecha: "30/11/2022, 20:23:01",
+        },
+        {
+            user: "cachito@gmail.com",
+            text: "probando de otro lado",
+            fecha: "30/11/2022, 20:23:32",
+        },{
+            user: "cachito@gmail.com",
+            text: "otro chat",
+            fecha: "11/11/2022, 21:46:20"
+        },{
+            user: "cachito@gmail.com",
+            text: "hola buenos dias",
+            fecha: "11/11/2022, 21:46:20"
+        },{
+            user: "sole@gmail.com",
+            text: "hola buenos dias",
+            fecha: "11/11/2022, 21:46:20"
+        },{
+            user: "lucas@gmail.com",
+            text: "hola buenos dias",
+            fecha: "11/11/2022, 21:46:20"
+        },{
+            user: "lucas@gmail.com",
+            text: "hola buenos dias",
+            fecha: "11/11/2022, 21:46:20"
+        },{
+            "user": "debora@gmail.com",
+            text: "hola buenos dias",
+            fecha: "11/11/2022, 21:46:20"
+        },{
+            "user": "debora@gmail.com",
+            text: "hola buenos dias",
+            fecha: "11/11/2022, 21:46:20"
+        },
+    ])
+3-
+    db.productos.find()
+    db.mensajes.find()
+4-
+    db.productos.estimatedDocumentCount()
+    db.mensajes.estimatedDocumentCount()
+5-
+    A =>  db.productos.insertOne({titulo: "album", precio: 4500, thumbnail: "url"})
+    B => 
+        1. db.productos.find({precio: {$lt: 1000}})
+        2. db.productos.find({$and: [{precio: {$gt: 1000}}, {precio: {$lt: 3000}}]})
+        3. db.productos.find({precio: {$gt: 3000}})
+        4. db.productos.find({},{"titulo": 1, "_id": 0}).sort({"precio": 1}).skip(2).limit(1)
+    C => db.productos.updateMany({}, {$set: {"stock": 100}})
+    D => db.productos.updateOne({precio: {$gt: 4000}}, {$set: {"stock": 0}})
+    F => db.productos.deleteMany({precio: {$lt: 1000}})
+
+
+
+6- 
+    db.createUser({user:"pepe", pwd:"123", roles:[{role: "read", db: "ecommerce"}]})

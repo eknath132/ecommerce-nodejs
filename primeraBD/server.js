@@ -26,8 +26,6 @@ productos.crearTabla().then(() => {
     chats.crearTabla().then(() => console.log('Tablas creadas'))
 })
 
-
-
 io.on('connection', async socket => {
     console.log(' >>> Nuevo cliente <<< ')
     
